@@ -65,9 +65,6 @@ pipeline {
                 script {
                       echo 'commit to changes to github'
                       withCredentials([usernamePassword(credentialsId: 'github-cred-two', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                      sh 'git config user.name "jenkins"'
-                      sh 'git config user.email "jenkins@example.com"'
-
                       sh 'git status'
                       sh 'git branch'
                       sh 'git config --list'
