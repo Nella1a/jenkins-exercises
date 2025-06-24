@@ -1,11 +1,9 @@
 @Library('jenkins-exercises-shared-library')
-def UPDATED_VERSION
-
 
 pipeline {
     agent any
     environment {
-        BRANCH_NAME = 'main'
+        UPDATED_VERSION = ''
     }
 
 
