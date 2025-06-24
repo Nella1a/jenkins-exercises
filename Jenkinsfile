@@ -12,7 +12,7 @@ pipeline {
         stage('increment version'){
             steps {
                 script {
-                    incrementVersion UPDATED_VERSION
+                  UPDATED_VERSION = incrementVersion()
                 }
             }
         }
