@@ -1,3 +1,6 @@
+def UPDATED_VERSION
+
+
 pipeline {
     agent any
     environment {
@@ -13,18 +16,17 @@ pipeline {
                     // change directory
                     dir('app') {
                      sh 'git fetch'
-                     sh "it checkout ${env.BRANCH_NAME}"
                     def CURRENT_VERSION = sh(
                         script: "node -p \"require('./package.json').version\"",
                         returnStdout: true
                     ).trim()
                      sh 'npm version minor --git-tag-version false'
 
-                    def UPDATED_VERSION = sh(
+                    UPDATED_VERSION = sh(
                         script: "node -p \"require('./package.json').version\"",
                         returnStdout: true
                     ).trim()
-                    
+
                      sh 'git add package.json'
                      sh '[ -f ./package-lock.json ] && git add package-lock.json'
                     }
@@ -45,13 +47,6 @@ pipeline {
                 }
             }
         }
-        stage("build app") {
-            steps {
-                script {
-                    echo "building the application"
-                }
-            }
-        }
         stage("build image") {
             steps {
                 script {
@@ -65,10 +60,23 @@ pipeline {
             }
         }
 
-        stage("deploy") {
+        stage ("commit version update"){
             steps {
                 script {
-                    echo "deploying the application ..."
+                      echo 'commit to changes to github'
+                      withCredentials([usernamePassword(credentialsId: 'github-cred-two', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                      sh 'git config user.name "jenkins"'
+                      sh 'git config user.email "jenkins@example.com"'
+
+                      sh 'git status'
+                      sh 'git branch'
+                      sh 'git config --list'
+
+                      sh 'git remote set-url origin https://$USER:$PASS@github.com/Nella1a/jenkins-exercises.git'
+                      sh 'git add .'
+                      sh 'git commit -m "ci: version bump"'
+                      sh 'git push origin HEAD:main'
+                    }
                 }
             }
         }
