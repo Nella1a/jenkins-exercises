@@ -1,11 +1,10 @@
-@Library('jenkins-exercises-shared-library')
+@Library('jenkins-exercises-shared-library')_
 
 pipeline {
     agent any
     environment {
         UPDATED_VERSION = ''
     }
-
 
     stages {
         stage('increment version'){
