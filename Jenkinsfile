@@ -1,9 +1,11 @@
-@Library('jenkins-exercises-shared-library')_
+@Library('jenkins-exercises-shared-library')
+def UPDATED_VERSION
+
 
 pipeline {
     agent any
     environment {
-        UPDATED_VERSION = ''
+        BRANCH_NAME = 'main'
     }
 
     stages {
